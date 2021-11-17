@@ -1,10 +1,9 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 
 @include mat.core();
 
 @import 'app-common.scss';
 @import 'app-externals.scss';
-@import 'dragular.scss';
 @import 'app-ngx-charts-dark.scss';
 @import 'app-scrollbars.scss';
 

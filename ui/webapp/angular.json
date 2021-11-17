@@ -30,9 +30,9 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "allowedCommonJsDependencies": ["brace/mode/xml", "brace/mode/json", "dragula", "json-diff-ts"],
+            "allowedCommonJsDependencies": ["brace/mode/xml", "brace/mode/json", "json-diff-ts", "clone-deep"],
             "outputPath": "dist/webapp",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -52,13 +52,7 @@
               },
               "src/styles.css"
             ],
-            "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -68,13 +62,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -86,6 +74,14 @@
                   "maximumWarning": "6kb"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             },
             "central": {
               "budgets": [
@@ -99,7 +95,13 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.dev-central.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             },
             "managed": {
               "budgets": [
@@ -113,7 +115,13 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.dev-managed.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             },
             "cov-standalone": {
               "budgets": [
@@ -127,7 +135,14 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.cov-standalone.ts"
                 }
-              ]
+              ],
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "vendorChunk": true,
+              "customWebpackConfig": {
+                "path": "./cypress/coverage.webpack.ts"
+              }
             },
             "cov-central": {
               "budgets": [
@@ -141,7 +156,14 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.cov-central.ts"
                 }
-              ]
+              ],
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "vendorChunk": true,
+              "customWebpackConfig": {
+                "path": "./cypress/coverage.webpack.ts"
+              }
             },
             "cov-managed": {
               "budgets": [
@@ -155,18 +177,29 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.cov-managed.ts"
                 }
-              ]
+              ],
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "vendorChunk": true,
+              "customWebpackConfig": {
+                "path": "./cypress/coverage.webpack.ts"
+              }
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "ngx-build-plus:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "webapp:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "webapp:build:production"
+            },
+            "development": {
+              "browserTarget": "webapp:build:development"
             },
             "central": {
               "browserTarget": "webapp:build:central",
@@ -178,32 +211,23 @@
             },
             "cov-standalone": {
               "browserTarget": "webapp:build:cov-standalone",
-              "port": 4210,
-              "extraWebpackConfig": "./cypress/coverage.webpack.js"
+              "port": 4210
             },
             "cov-central": {
               "browserTarget": "webapp:build:cov-central",
-              "port": 4211,
-              "extraWebpackConfig": "./cypress/coverage.webpack.js"
+              "port": 4211
             },
             "cov-managed": {
               "browserTarget": "webapp:build:cov-managed",
-              "port": 4212,
-              "extraWebpackConfig": "./cypress/coverage.webpack.js"
+              "port": 4212
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "webapp:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/tsconfig.app.json"],
-            "exclude": ["**/node_modules/**"]
           }
         }
       }
